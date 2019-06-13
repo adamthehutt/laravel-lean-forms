@@ -1,0 +1,7 @@
+<div class="form-group @error($name) has-error @enderror">
+    <label for="{{ $name }}" class="{{ $label_class }}">{{ $label ?? ucwords(str_replace("_", " ", $name)) }}</label>
+    <div class="input-group">
+        <span class="input-group-addon"><i class="fas fa-calendar"></i></span>
+        <input id="{{ $name }}" type="text" name="{{ $name }}" value="{{ old($name) ?? optional($__model)->$name ?? $default }}" {!! $attributes !!} class="form-control datepicker">
+    </div>
+</div>
