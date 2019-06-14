@@ -5,6 +5,7 @@ namespace AdamTheHutt\LeanForms\Elements;
 
 use AdamTheHutt\LeanForms\AbstractForm;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 
 class BaseElement implements Htmlable
@@ -17,6 +18,9 @@ class BaseElement implements Htmlable
 
     /** @var string */
     protected $template;
+
+    /** @var array  */
+    protected $dataAttributes = ["toggle"];
 
     final public function __construct(AbstractForm $form, array $vars = [])
     {
@@ -59,9 +63,9 @@ class BaseElement implements Htmlable
         return $this;
     }
 
-    public function default(?string $default): self
+    public function default($default): self
     {
-        $this->vars["default"] = $default;
+        $this->vars["default"] = (string) $default ?? null;
 
         return $this;
     }
@@ -80,6 +84,24 @@ class BaseElement implements Htmlable
         return $this;
     }
 
+    public function options(iterable $options): self
+    {
+        if (is_array($options) && !Arr::isAssoc($options)) {
+            $options = array_combine($options, $options);
+        }
+
+        $this->vars["options"] = $options;
+
+        return $this;
+    }
+
+    public function attr($key, $value): self
+    {
+        $this->vars["attributes"][$key] = $value;
+
+        return $this;
+    }
+
     /**
      * Use this for, e.g., ->required() or ->placeholder("some text")
      *
@@ -90,8 +112,14 @@ class BaseElement implements Htmlable
      */
     public function __call(string $method, $args = []): self
     {
-        $this->vars["attributes"][$method] = count($args) ?
-            array_shift($args) : $method;
+        if (array_key_exists($method, $this->vars)) {
+            $this->vars[$method] = array_shift($args);
+        } elseif (in_array($method, $this->dataAttributes)) {
+            $this->vars["attributes"]["data-$method"] = array_shift($args);
+        } else {
+            $this->vars["attributes"][$method] = count($args) ?
+                array_shift($args) : $method;
+        }
 
         return $this;
     }
