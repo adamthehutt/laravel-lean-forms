@@ -64,6 +64,72 @@ abstract class AbstractForm
     }
 
     /**
+     * Three options:
+     * - set as $this->route property in child class
+     * - override method route() in child class
+     * - guess based on naming conventions (requires use of a model)
+     */
+    public function route()
+    {
+        if (isset($this->route)) {
+            return route($this->route);
+        }
+
+        switch($this->guessCurrentAction()) {
+            case 'create':
+                return route(Str::snake(class_basename($this->model)) . ".store");
+            case 'edit':
+                return route(Str::snake(class_basename($this->model)) . ".update", [$this->model]);
+            case 'destroy':
+                return route(Str::snake(class_basename($this->model)) . ".destroy", [$this->model]);
+            default:
+                throw new \RuntimeException("Could not determine what route to use for the form");
+        }
+    }
+
+    /**
+     * Four options:
+     * - set as $this->method property in child class
+     * - override method in child class
+     * - guess based on naming conventions
+     * - fallback to GET
+     */
+    public function method()
+    {
+        if (isset($this->method)) {
+            return $this->method;
+        }
+
+        $currentAction = $this->guessCurrentAction();
+
+        $conventions = [
+            'create' => 'POST',
+            'edit' => 'PUT'
+        ];
+
+        return $conventions[$currentAction] ?? "GET";
+    }
+
+    /**
+     * Try to determine current crud action based on name of route or, failing that, form class
+     *
+     * @return string
+     */
+    public function guessCurrentAction(): string
+    {
+        if ($routeName = app("router")->currentRouteName()) {
+            return Arr::last(explode(".", $routeName));
+        } else {
+            return
+                strtolower(
+                    Arr::last(
+                        explode("_",
+                            Str::snake(
+                                class_basename($this)))));
+        }
+    }
+
+    /**
      * @param  BaseElement[]  ...$args
      *
      * @return HtmlString
@@ -83,65 +149,5 @@ abstract class AbstractForm
     protected function element(string $elementClass, array $params = []): BaseElement
     {
         return new $elementClass($this, $params);
-    }
-
-    /**
-     * Three options:
-     * - set as $this->route property in child class
-     * - override method in child class
-     * - guess based on naming conventions (requires use of a model)
-     */
-    protected function route()
-    {
-        if (isset($this->route)) {
-            return route($this->route);
-        }
-
-        switch($this->guessCurrentAction()) {
-            case 'create':
-                return route(Str::snake(class_basename($this->model)) . ".store");
-            case 'edit':
-                return route(Str::snake(class_basename($this->model)) . ".update", [$this->model]);
-            default:
-                throw new \RuntimeException("Could not determine what route to use for the form");
-        }
-    }
-
-    /**
-     * Four options:
-     * - set as $this->method property in child class
-     * - override method in child class
-     * - guess based on naming conventions
-     * - fallback to GET
-     */
-    protected function method()
-    {
-        if (isset($this->method)) {
-            return $this->method;
-        }
-
-        $currentAction = $this->guessCurrentAction();
-
-        $conventions = [
-            'create' => 'POST',
-            'edit' => 'PUT'
-        ];
-
-        return $conventions[$currentAction] ?? "GET";
-    }
-
-    /**
-     * Try to determine current crud action based on name of form class
-     *
-     * @return string
-     */
-    protected function guessCurrentAction(): string
-    {
-        return
-            strtolower(
-                Arr::last(
-                    explode("_",
-                        Str::snake(
-                            class_basename($this)))));
     }
 }
