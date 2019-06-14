@@ -103,7 +103,9 @@ class BaseElement implements Htmlable
     }
 
     /**
-     * Use this for, e.g., ->required() or ->placeholder("some text")
+     * Use this for, e.g.,
+     * ->required()
+     * ->placeholder("some text")
      *
      * @param  string  $method
      * @param  array  $args
@@ -112,13 +114,16 @@ class BaseElement implements Htmlable
      */
     public function __call(string $method, $args = []): self
     {
-        if (array_key_exists($method, $this->vars)) {
-            $this->vars[$method] = array_shift($args);
+        if (false === Arr::first($args)) {
+            if (array_key_exists($method, $this->vars["attributes"])) {
+                unset($this->vars["attributes"][$method]);
+            }
+        } elseif (array_key_exists($method, $this->vars)) {
+            $this->vars[$method] = Arr::first($args);
         } elseif (in_array($method, $this->dataAttributes)) {
-            $this->vars["attributes"]["data-$method"] = array_shift($args);
+            $this->vars["attributes"]["data-$method"] = Arr::first($args);
         } else {
-            $this->vars["attributes"][$method] = count($args) ?
-                array_shift($args) : $method;
+            $this->vars["attributes"][$method] = Arr::first($args) ?? $method;
         }
 
         return $this;
