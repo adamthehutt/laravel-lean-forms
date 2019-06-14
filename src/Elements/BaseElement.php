@@ -6,6 +6,7 @@ namespace AdamTheHutt\LeanForms\Elements;
 use AdamTheHutt\LeanForms\AbstractForm;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\HtmlString;
 
 class BaseElement implements Htmlable
@@ -44,8 +45,10 @@ class BaseElement implements Htmlable
         }
         $this->vars["attributes"] = $htmlAttributes;
 
+        $skin = $this->form->skin ?? Config::get("lean-forms.skin");
+
         return new HtmlString(
-            view("lean-forms::{$this->form->skin}.{$this->template}", $this->vars)->render()
+            view("lean-forms::{$skin}.{$this->template}", $this->vars)->render()
         );
     }
 

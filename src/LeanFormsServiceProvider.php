@@ -31,5 +31,13 @@ class LeanFormsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/lean-forms'),
         ], 'lean-forms-views');
+
+        $this->publishes([
+            __DIR__.'/../config/lean-forms.php' => config_path('lean-forms.php'),
+        ]);
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/lean-forms.php', 'lean-forms'
+        );
     }
 }

@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 abstract class AbstractForm
 {
     /** @var string  */
-    public $skin = "bootstrap3";
+    public $skin;
 
     /** @var Model */
     public $model;
@@ -66,6 +66,7 @@ abstract class AbstractForm
     /**
      * @param  BaseElement[]  ...$args
      *
+     * @return HtmlString
      * @throws \Throwable
      */
     protected function composite(...$args): HtmlString
