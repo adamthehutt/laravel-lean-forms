@@ -120,12 +120,11 @@ abstract class AbstractForm
         if ($routeName = app("router")->currentRouteName()) {
             return Arr::last(explode(".", $routeName));
         } else {
-            return
-                strtolower(
-                    Arr::last(
-                        explode("_",
-                            Str::snake(
-                                class_basename($this)))));
+            return strtolower(
+                       Arr::last(
+                           explode("_",
+                               Str::snake(
+                                   class_basename($this)))));
         }
     }
 
