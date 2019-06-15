@@ -1,7 +1,7 @@
 @php
 $selected = old($name) ?? optional($__model)->$name ?? $default;
 @endphp
-<div class="form-group">
+<div class="form-group @error($name) has-error @enderror">
     <label for="{{ $name }}" class="{{ $label_class }}">{{ $label ?? ucwords(str_replace("_", " ", $name)) }}</label>
     <select id="{{ $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
     @foreach($options as $key => $value)
