@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace AdamTheHutt\LeanForms;
 
+use AdamTheHutt\LeanForms\Console\FormMakeCommand;
 use Illuminate\Support\ServiceProvider;
 
 class LeanFormsServiceProvider extends ServiceProvider
@@ -15,6 +16,7 @@ class LeanFormsServiceProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
+            $this->commands(FormMakeCommand::class);
             $this->registerPublishing();
         }
 
