@@ -1,8 +1,13 @@
 @php
 $selected = old($name) ?? optional($__model)->$name ?? $default;
 @endphp
+@if($includeFormGroup)
 <div class="form-group @error($name) has-error @enderror">
+@endif
+    @if($includeLabel)
     <label for="{{ $name }}" class="{{ $label_class }}">{{ $label ?? ucwords(str_replace("_", " ", $name)) }}</label>
+    @endif
+
     <select id="{{ $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
     @foreach($options as $key => $value)
         @if (is_iterable($value))
@@ -16,4 +21,7 @@ $selected = old($name) ?? optional($__model)->$name ?? $default;
         @endif
     @endforeach
     </select>
+
+@if($includeFormGroup)
 </div>
+@endif

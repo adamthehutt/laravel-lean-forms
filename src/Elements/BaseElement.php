@@ -11,6 +11,12 @@ use Illuminate\Support\HtmlString;
 
 class BaseElement implements Htmlable
 {
+    /** @var bool  */
+    public $includeFormGroup;
+
+    /** @var bool  */
+    public $includeLabel;
+
     /** @var AbstractForm  */
     protected $form;
 
@@ -30,11 +36,7 @@ class BaseElement implements Htmlable
         $this->vars["__model"] = optional($form->model);
     }
 
-    /**
-     * @return string
-     * @throws \Throwable
-     */
-    public function toHtml()
+    public function toHtml(): HtmlString
     {
         $htmlAttributes = "";
         foreach ($this->vars['attributes'] as $attribute => $value) {
@@ -44,6 +46,8 @@ class BaseElement implements Htmlable
             $htmlAttributes .= ' ' . $attribute . '="' . e($value) . '" ';
         }
         $this->vars["attributes"] = $htmlAttributes;
+        $this->vars["includeLabel"] = $this->includeLabel ?? $this->form->wrap ?? true;
+        $this->vars["includeFormGroup"] = $this->includeFormGroup ?? $this->form->wrap ?? true;
 
         $skin = $this->form->skin ?? Config::get("lean-forms.skin");
 

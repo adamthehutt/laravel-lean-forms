@@ -21,6 +21,12 @@ abstract class AbstractForm
     /** @var Model */
     public $model;
 
+    /** @var array  */
+    public $fields = [];
+
+    /** @var bool   Whether to wrap the form fields with label, div.form-group, etc. */
+    public $wrap = true;
+
     /** @var string */
     protected $method;
 
@@ -37,6 +43,18 @@ abstract class AbstractForm
         }
 
         $this->request = app('request');
+    }
+
+    /**
+     * For plain vanilla fields we may not need to define a full method in the
+     * child form class. Instead, we rely on basic configuration and
+     * convention.
+     */
+    public function __call(string $method, array $args): BaseElement
+    {
+        if (isset($this->fields[$method])) {
+            return $this->element($this->fields[$method])->name($method);
+        }
     }
 
     public function open($method = null, $action = null): Opening
@@ -147,6 +165,14 @@ abstract class AbstractForm
 
     protected function element(string $elementClass, array $params = []): BaseElement
     {
+        // Use some cleverness to guess a default field name
+        // We'll take the method name that was called on the form and snake_case_it
+        // This is easily overridden by anyone calling ->name("abc") on the element
+        if (!array_key_exists("name", $params)) {
+            $methodName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
+            $params["name"] = Str::snake($methodName);
+        }
+
         return new $elementClass($this, $params);
     }
 }
