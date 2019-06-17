@@ -123,6 +123,8 @@ The following field types are currenly supported:
  * Email
  * File
  * Hidden
+ * Month
+ * Radio
  * Select
  * Submit
  * Text

@@ -5,6 +5,7 @@ namespace AdamTheHutt\LeanForms\Elements;
 
 use AdamTheHutt\LeanForms\AbstractForm;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\HtmlString;
@@ -29,7 +30,7 @@ class BaseElement implements Htmlable
     final public function __construct(AbstractForm $form, array $vars = [])
     {
         $this->form = $form;
-        $this->vars = array_replace_recursive($this->vars, $this->parseParameters($vars));
+        $this->vars = array_replace_recursive($this->vars, $this->buildInitialParameters($vars));
         $this->vars["__model"] = optional($form->model);
     }
 
@@ -42,25 +43,27 @@ class BaseElement implements Htmlable
         return $this->vars['__value'] ?? null;
     }
 
+    public function getSkin(): string
+    {
+        return $this->form->skin ?? Config::get("lean-forms.skin");
+    }
+
     public function toHtml(): HtmlString
     {
-        $htmlAttributes = "";
-        foreach ($this->vars['attributes'] as $attribute => $value) {
-            if (is_int($attribute)) {
-                $attribute = $value;
-            }
-            $htmlAttributes .= ' ' . $attribute . '="' . e($value) . '" ';
-        }
-        $this->vars["attributes"] = $htmlAttributes;
+        $this->convertAttributesToHtml();
         $this->vars["includeLabel"] = $this->includeLabel ?? $this->form->wrap ?? true;
         $this->vars["includeFormGroup"] = $this->includeFormGroup ?? $this->form->wrap ?? true;
+        if (null == $this->vars['label'] && array_key_exists("name", $this->vars)) {
+            $this->vars['label'] = $this->labelFromName($this->vars['name']);
+        }
         $this->vars["__value"] = $this->determineValue();
 
-        $skin = $this->form->skin ?? Config::get("lean-forms.skin");
+        $namespacedTemplate = "lean-forms::{$this->getSkin()}.{$this->template}";
+        $html = app(ViewFactory::class)
+            ->make($namespacedTemplate, $this->vars)
+            ->render();
 
-        return new HtmlString(
-            view("lean-forms::{$skin}.{$this->template}", $this->vars)->render()
-        );
+        return new HtmlString($html);
     }
 
     public function id(string $id): self
@@ -129,7 +132,7 @@ class BaseElement implements Htmlable
         return $this;
     }
 
-    public function attr($key, $value): self
+    public function attr(string $key, string $value): self
     {
         if (false !== $value) {
             $this->vars["attributes"][$key] = $value;
@@ -138,9 +141,24 @@ class BaseElement implements Htmlable
         return $this;
     }
 
-    public function data($key, $value): self
+    public function data(string $key, string $value): self
     {
         return $this->attr("data-$key", $value);
+    }
+
+    public function nowrap(bool $bool = true): self
+    {
+        $this->includeFormGroup = $this->includeLabel = !$bool;
+
+        return $this;
+    }
+
+    public function labelFromName(string $name): string
+    {
+        $label = ucwords(str_replace("_", " ", $name));
+
+        // Strip trailing " Id"
+        return preg_replace("/\sId$/", "", $label);
     }
 
     /**
@@ -168,7 +186,7 @@ class BaseElement implements Htmlable
         return $this;
     }
 
-    protected function parseParameters(array $params = [])
+    protected function buildInitialParameters(array $params = [])
     {
         $standard = [
             "id" => $params["id"] ?? $params["name"] ?? "",
@@ -200,5 +218,17 @@ class BaseElement implements Htmlable
                $this->vars["value"] ??
                optional($this->form->model)->{$this->vars['name']} ??
                $this->vars["default"];
+    }
+
+    protected function convertAttributesToHtml(): void
+    {
+        $htmlAttributes = "";
+        foreach ($this->vars['attributes'] as $attribute => $value) {
+            if (is_int($attribute)) {
+                $attribute = $value;
+            }
+            $htmlAttributes .= ' ' . $attribute . '="' . e($value) . '" ';
+        }
+        $this->vars["attributes"] = $htmlAttributes;
     }
 }
