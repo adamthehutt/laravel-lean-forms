@@ -26,14 +26,20 @@ class BaseElement implements Htmlable
     /** @var string */
     protected $template;
 
-    /** @var array  */
-    protected $dataAttributes = ["toggle"];
-
     final public function __construct(AbstractForm $form, array $vars = [])
     {
         $this->form = $form;
         $this->vars = array_replace_recursive($this->vars, $this->parseParameters($vars));
         $this->vars["__model"] = optional($form->model);
+    }
+
+    public function getValue()
+    {
+        if (!array_key_exists('__value', $this->vars)) {
+            $this->vars['__value'] = $this->determineValue();
+        }
+
+        return $this->vars['__value'] ?? null;
     }
 
     public function toHtml(): HtmlString
@@ -48,12 +54,20 @@ class BaseElement implements Htmlable
         $this->vars["attributes"] = $htmlAttributes;
         $this->vars["includeLabel"] = $this->includeLabel ?? $this->form->wrap ?? true;
         $this->vars["includeFormGroup"] = $this->includeFormGroup ?? $this->form->wrap ?? true;
+        $this->vars["__value"] = $this->determineValue();
 
         $skin = $this->form->skin ?? Config::get("lean-forms.skin");
 
         return new HtmlString(
             view("lean-forms::{$skin}.{$this->template}", $this->vars)->render()
         );
+    }
+
+    public function id(string $id): self
+    {
+        $this->vars["id"] = $id;
+
+        return $this;
     }
 
     public function name(string $name): self
@@ -70,9 +84,22 @@ class BaseElement implements Htmlable
         return $this;
     }
 
+    /**
+     * Default is lowest priority value
+     */
     public function default($default): self
     {
-        $this->vars["default"] = (string) $default ?? null;
+        $this->vars["default"] = $default ?? null;
+
+        return $this;
+    }
+
+    /**
+     * Value takes precedence over model property and default but not old form input
+     */
+    public function value($value): self
+    {
+        $this->vars["value"] = $value;
 
         return $this;
     }
@@ -104,9 +131,16 @@ class BaseElement implements Htmlable
 
     public function attr($key, $value): self
     {
-        $this->vars["attributes"][$key] = $value;
+        if (false !== $value) {
+            $this->vars["attributes"][$key] = $value;
+        }
 
         return $this;
+    }
+
+    public function data($key, $value): self
+    {
+        return $this->attr("data-$key", $value);
     }
 
     /**
@@ -127,8 +161,6 @@ class BaseElement implements Htmlable
             }
         } elseif (array_key_exists($method, $this->vars)) {
             $this->vars[$method] = Arr::first($args);
-        } elseif (in_array($method, $this->dataAttributes)) {
-            $this->vars["attributes"]["data-$method"] = Arr::first($args);
         } else {
             $this->vars["attributes"][$method] = Arr::first($args) ?? $method;
         }
@@ -139,6 +171,7 @@ class BaseElement implements Htmlable
     protected function parseParameters(array $params = [])
     {
         $standard = [
+            "id" => $params["id"] ?? $params["name"] ?? "",
             "name" => $params["name"] ?? "",
             "label" => $params["label"] ?? null,
             "default" => $params["default"] ?? null,
@@ -148,5 +181,24 @@ class BaseElement implements Htmlable
         $extras = array_diff_key($params, $standard);
 
         return $standard + $extras;
+    }
+
+    /**
+     * Order of priority (highest to lowest):
+     * 1. specially assigned __value
+     * 2. old form input
+     * 3. explicitly assigned value
+     * 4. model property for field name
+     * 5. explicitly assigned default
+     *
+     * @return mixed
+     */
+    protected function determineValue()
+    {
+        return $this->vars["__value"] ??
+               old($this->vars["name"]) ??
+               $this->vars["value"] ??
+               optional($this->form->model)->{$this->vars['name']} ??
+               $this->vars["default"];
     }
 }

@@ -24,6 +24,9 @@ abstract class AbstractForm
     /** @var array  */
     public $fields = [];
 
+    /** @var bool   Whether to accept file inputs */
+    public $files;
+
     /** @var bool   Whether to wrap the form fields with label, div.form-group, etc. */
     public $wrap = true;
 
@@ -52,8 +55,10 @@ abstract class AbstractForm
      */
     public function __call(string $method, array $args): BaseElement
     {
-        if (isset($this->fields[$method])) {
-            return $this->element($this->fields[$method])->name($method);
+        $fieldName = Str::snake($method);
+
+        if (isset($this->fields[$fieldName])) {
+            return $this->element($this->fields[$fieldName])->name($fieldName);
         }
     }
 
@@ -62,8 +67,9 @@ abstract class AbstractForm
         $realMethod = $method ?? $this->method();
         $htmlMethod = in_array(strtoupper($realMethod), ['GET', 'POST']) ? $realMethod : "POST";
         $action     = $action ?? $this->route();
+        $files      = $this->files;
 
-        return new Opening($this, compact("realMethod", "htmlMethod", "action"));
+        return new Opening($this, compact("realMethod", "htmlMethod", "action", "files"));
     }
 
     public function submit(string $text = "Submit"): Submit

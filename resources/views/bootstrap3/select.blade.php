@@ -1,23 +1,20 @@
-@php
-$selected = old($name) ?? optional($__model)->$name ?? $default;
-@endphp
 @if($includeFormGroup)
 <div class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $name }}" class="{{ $label_class }}">{{ $label ?? ucwords(str_replace("_", " ", $name)) }}</label>
+    <label for="{{ $id ?? $name }}" class="{{ $label_class }}">{{ $label ?? ucwords(str_replace("_", " ", $name)) }}</label>
     @endif
 
-    <select id="{{ $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
+    <select id="{{ $id ?? $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
     @foreach($options as $key => $value)
         @if (is_iterable($value))
             <optgroup label="{{ $value }}">
             @foreach($value as $subkey => $subvalue)
-                <option value="{{ $subkey }}" @if($subkey == $selected) selected @endif>{{ $subvalue }}</option>
+                <option value="{{ $subkey }}" @if($__value->contains($subkey)) selected @endif>{{ $subvalue }}</option>
             @endforeach
             </optgroup>
         @else
-            <option value="{{ $key }}" @if($key == $selected) selected @endif>{{ $value }}</option>
+            <option value="{{ $key }}" @if($__value->contains($key)) selected @endif>{{ $value }}</option>
         @endif
     @endforeach
     </select>
