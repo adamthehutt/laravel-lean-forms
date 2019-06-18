@@ -119,7 +119,8 @@ The following field types are currenly supported:
  * Button
  * Checkbox Boolean
  * Currency
- * Datepicker
+ * Datepicker (https://github.com/eternicode/bootstrap-datepicker)
+ * Datetimepicker (https://github.com/Eonasdan/bootstrap-datetimepicker)
  * Email
  * File
  * Hidden
@@ -155,8 +156,9 @@ behavior by calling:
 ```php
 {{ $form->open()->nowrap() }}
 ```
-For more fine-grained control, you can also specify the $includeLabel and/or 
-$includeFormGroup properties on an individual field.
+For more fine-grained control, you can also call ```$element->nowrap()``` on a 
+specific element or even specify the ```$includeLabel``` and/or 
+```$includeFormGroup``` properties on the field.
 
 #### Determining field values
 When a form loads, the field values are generally determined based on the 

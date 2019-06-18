@@ -10,6 +10,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\HtmlString;
 
+/**
+ * @method  BaseElement disabled(bool $bool = true)
+ * @method  BaseElement readonly(bool $bool = true)
+ * @method  BaseElement required(bool $bool = true)
+ * @method  BaseElement title(string $title)
+ */
 class BaseElement implements Htmlable
 {
     /** @var bool  */
@@ -213,10 +219,13 @@ class BaseElement implements Htmlable
      */
     protected function determineValue()
     {
+        $old = old($this->dotNotation($this->vars["name"]));
+        $modelValue = optional($this->form->model)->{$this->vars['name']};
+
         return $this->vars["__value"] ??
-               old($this->vars["name"]) ??
+               $old ??
                $this->vars["value"] ??
-               optional($this->form->model)->{$this->vars['name']} ??
+               $modelValue ??
                $this->vars["default"];
     }
 
@@ -230,5 +239,10 @@ class BaseElement implements Htmlable
             $htmlAttributes .= ' ' . $attribute . '="' . e($value) . '" ';
         }
         $this->vars["attributes"] = $htmlAttributes;
+    }
+
+    protected function dotNotation(string $name)
+    {
+        return str_replace(["[","]"], [".",""], $name);
     }
 }
