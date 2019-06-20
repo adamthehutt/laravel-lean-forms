@@ -125,6 +125,7 @@ The following field types are currenly supported:
  * File
  * Hidden
  * Month
+ * Password
  * Radio
  * Select
  * Submit

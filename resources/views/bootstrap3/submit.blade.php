@@ -1,1 +1,1 @@
-<button type="submit" class="{{ $class }}">{!! $__value !!}</button>
+<button type="submit" class="{{ $class }}" {!! $attributes !!}>{!! $__value !!}</button>
