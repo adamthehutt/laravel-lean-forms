@@ -103,7 +103,7 @@ fields. There are two ways you can do this.
      * label($value) &mdash; Set the label text (defaults to a user-friendly version
      of the name)
      * class($value) &mdash; To override the template default for the element
-     * labelClass() &mash; To override the template default for the label
+     * labelClass() &mdash; To override the template default for the label
      * options($map) &mdash; Key-value array or collection of options for select, 
      radio, etc.
      * value($value) &mdash; Set the value of the field (override the model property)
