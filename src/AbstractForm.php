@@ -170,8 +170,8 @@ abstract class AbstractForm
 
         return new HtmlString($combined);
     }
-
-    protected function element(string $elementClass, array $params = []): BaseElement
+    
+    protected function element(string $elementClass, array $params = [])
     {
         // Use some cleverness to guess a default field name
         // We'll take the method name that was called on the form and snake_case_it
