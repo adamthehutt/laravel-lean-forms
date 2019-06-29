@@ -58,7 +58,7 @@ abstract class AbstractForm
         $fieldName = Str::snake($method);
 
         if (isset($this->fields[$fieldName])) {
-            return $this->element($this->fields[$fieldName])->name($fieldName);
+            return $this->element($this->fields[$fieldName], ['name' => $fieldName]);
         }
 
         throw new \RuntimeException("Failed to handle call for field \"$method\"");
