@@ -1,0 +1,10 @@
+@if($includeFormGroup)
+<div class="form-group @error($name) has-error @enderror">
+@endif
+    @if($includeLabel)
+    <label for="{{ $id ?? $name }}" class="{{ $label_class }}">{{ $label }}</label>
+    @endif
+    <input id="{{ $id ?? $name }}" type="number" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="{{ $class }}">
+@if($includeFormGroup)
+</div>
+@endif
