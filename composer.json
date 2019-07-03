@@ -1,6 +1,6 @@
 {
     "name": "adamthehutt/laravel-lean-forms",
-    "description": "Code-based form configuration for Laravel. Lean, clean, and mean blade templates.",
+    "description": "Code-based form configuration for Laravel. Lean, clean, and mean blade templates. Complete separation of business logic and UI/display logic.",
     "type": "library",
     "require": {
         "php": ">=7.3",
