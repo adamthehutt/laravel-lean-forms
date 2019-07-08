@@ -2,7 +2,7 @@
 <div class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $id ?? $name }}" class="{{ $label_class }}">{{ $label }}</label>
+    <label for="{{ $id ?? $name }}" class="col-form-label {{ $label_class }}">{{ $label }}</label>
     @endif
 
     <select id="{{ $id ?? $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
