@@ -8,7 +8,7 @@
     <select id="{{ $id ?? $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
     @foreach($options as $key => $value)
         @if (is_iterable($value))
-            @include("lean-forms::bootstrap4.select-optgroup")
+            @include("lean-forms::" . config('lean-forms.skin') . ".select-optgroup")
         @else
             <option value="{{ $key }}" @if($__value->contains($key)) selected @endif>{{ $value }}</option>
         @endif
