@@ -4,7 +4,7 @@
     @if($includeLabel)
     <label for="{{ $id ?? $name }}" class="{{ $label_class }}">{{ $label }}</label>
     @endif
-    <input id="{{ $id ?? $name }}" type="file" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="{{ $class }}">
+    <input id="{{ $id ?? $name }}" type="file" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="form-control-file">
 @if($includeFormGroup)
 </div>
 @endif
