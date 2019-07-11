@@ -5,7 +5,11 @@
     <label for="{{ $name }}" class="{{ $label_class }}">{{ $label }}</label>
     @endif
     <div class="input-group">
-        <span class="input-group-prepend"><i class="fas fa-dollar"></i></span>
+        <div class="input-group-prepend">
+            <span class="input-group-text">
+                <i class="fas fa-dollar"></i>
+            </span>
+        </div>
         <input id="{{ $name }}" type="text" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="form-control currency">
     </div>
 @if($includeFormGroup)
