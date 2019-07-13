@@ -173,3 +173,19 @@ following (descending) order of priority:
 NB: There is additionally a special "__value" property that is used internally
 but you don't need to worry about it unless you're extending a form element
 class or modifying templates.
+
+#### Finding Form Classes
+You can always directly instantiate a form class using, e.g., ```new MyForm($model)```.
+
+You can also use the library's service container binding to locate a class. 
+For example, if you have a form class called ```App\Http\Forms\Animal\Create```,
+you could create a new instance using:
+```php
+$form = app("forms")->form("animal.create", $model);
+```
+
+This is a bit verbose, but it can be useful when combined with the ability to 
+configure namespaces in the lean-forms.php config file. By defining an array of
+namespaces in the config file, you can set a prioritized list of namespaces to 
+look for the form class. This allows package developers to include default
+form classes that can easily be overriden by prioritizing the App namespace. 

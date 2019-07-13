@@ -4,13 +4,26 @@ declare(strict_types=1);
 namespace AdamTheHutt\LeanForms;
 
 use AdamTheHutt\LeanForms\Console\FormMakeCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class LeanFormsServiceProvider extends ServiceProvider
+class LeanFormsServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+    public function register()
+    {
+        $this->app->singleton(LeanFormsManager::class);
+        $this->app->alias(LeanFormsManager::class, "forms");
+    }
+
+    public function provides()
+    {
+        return [
+            LeanFormsManager::class,
+            "forms"
+        ];
+    }
+
     /**
-     * Publishes configuration file.
-     *
      * @return  void
      */
     public function boot()
