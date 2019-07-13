@@ -2,7 +2,7 @@
 
 #### Installation
 ```bash
-php artisan composer require adamthehutt/laravel-lean-forms
+composer require adamthehutt/laravel-lean-forms
 ```
 
 If you would like to change the default skin or customize templates:

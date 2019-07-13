@@ -2,7 +2,7 @@
 <div class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $name }}" class="col-form-label {{ $label_class }}">{{ $label  }}</label>
+    <label for="{{ $name }}" class="col-form-label">{{ $label  }}</label>
     @endif
     <div class="input-group">
       <div class="input-group-prepend">

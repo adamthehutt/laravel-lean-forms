@@ -6,8 +6,4 @@ namespace AdamTheHutt\LeanForms\Elements;
 class Submit extends BaseElement
 {
     protected $template = "submit";
-
-    protected $vars = [
-        "class" => "btn btn-success"
-    ];
 }
