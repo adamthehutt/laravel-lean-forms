@@ -189,3 +189,9 @@ configure namespaces in the lean-forms.php config file. By defining an array of
 namespaces in the config file, you can set a prioritized list of namespaces to 
 look for the form class. This allows package developers to include default
 form classes that can easily be overriden by prioritizing the App namespace. 
+
+The LeanFormsManager class is also invokable, so the above could be slightly 
+shortened to:
+```php
+$form = app("forms")("animal.create", $model);
+```
