@@ -57,7 +57,7 @@ display logic:
 {{ $form->preferredDiet()->class("foo-bar") }}
 ```
 
-**Note:** Be sure to compile your js assets!
+**Note:** Be sure to compile your JavaScript assets!
 
 #### Form generator
 The package includes an artisan command for generating new form classes:
