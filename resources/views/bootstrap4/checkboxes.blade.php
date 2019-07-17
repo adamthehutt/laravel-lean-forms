@@ -1,13 +1,18 @@
 @if($includeFormGroup)
 <div class="form-group @error($name) has-error @enderror">
 @endif
-  @foreach($options as $key => $value)
+    @if($includeLabel)
+    <label for="{{ $id ?? $name }}" class="col-form-label">{{ $label }}</label>
+    @endif
+
+    @foreach($options as $key => $descriptor)
     <div class="form-check">
-      @if($includeLabel)
-      <input type="checkbox" name="{{ $name }}" value="1" class="form-check-input" {!! $attributes !!} @if($__value)checked @endif>
-      <label for="{{ $name }}" class="form-check-label">{{ $label }}</label>
+        <label>
+            <input type="checkbox" name="{{ $name }}" id="{{ $id ?? $name }}-{{ $key }}" value="{{ $key }}" class="form-check-input" @if($key == $__value) checked @endif>
+            {{ $descriptor }}
+        </label>
     </div>
-  @endforeach
+    @endforeach
 @if($includeFormGroup)
 </div>
 @endif
