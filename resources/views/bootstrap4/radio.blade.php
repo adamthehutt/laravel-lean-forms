@@ -1,8 +1,8 @@
 @if($includeFormGroup)
-<div class="form-group @error($name) has-error @enderror">
+<fieldset class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $id ?? $name }}" class="col-form-label">{{ $label }}</label>
+    <legend for="{{ $id ?? $name }}" class="col-form-label">{{ $label }}</legend>
     @endif
 
     @foreach($options as $key => $descriptor)
@@ -14,5 +14,5 @@
     </div>
     @endforeach
 @if($includeFormGroup)
-</div>
+</fieldset>
 @endif
