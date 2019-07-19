@@ -2,10 +2,10 @@
 <div class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $id ?? $name }}" class="{{ $label_class }}">{{ $label }}</label>
+    <label for="{{ $id ?? $name }}">{{ $label }}</label>
     @endif
 
-    <select id="{{ $id ?? $name }}" name="{{ $name }}" class="{{ $class }}" {!! $attributes !!}>
+    <select id="{{ $id ?? $name }}" name="{{ $name }}" class="form-control" {!! $attributes !!}>
     @foreach($options as $key => $value)
         @if (is_iterable($value))
             @include("lean-forms::bootstrap3.select-optgroup")
