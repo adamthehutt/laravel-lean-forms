@@ -34,6 +34,10 @@ class LeanFormsServiceProvider extends ServiceProvider implements DeferrableProv
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'lean-forms');
+        
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/lean-forms.php', 'lean-forms'
+        );
     }
 
     /**
@@ -50,9 +54,5 @@ class LeanFormsServiceProvider extends ServiceProvider implements DeferrableProv
         $this->publishes([
             __DIR__.'/../config/lean-forms.php' => config_path('lean-forms.php'),
         ]);
-
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/lean-forms.php', 'lean-forms'
-        );
     }
 }
