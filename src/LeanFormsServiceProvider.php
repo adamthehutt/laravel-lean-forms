@@ -7,7 +7,7 @@ use AdamTheHutt\LeanForms\Console\FormMakeCommand;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class LeanFormsServiceProvider extends ServiceProvider implements DeferrableProvider
+class LeanFormsServiceProvider extends ServiceProvider
 {
     public function register()
     {
