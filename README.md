@@ -119,15 +119,10 @@ fields. There are two ways you can do this.
 #### Available field types
 The following field types are currenly supported:
  * Button
- * Checboxes (Bootstrap 4)
+ * Checboxes
  * Checkbox Boolean
  * Currency
- * Datepicker 
-    * Bootstrap 3: https://github.com/eternicode/bootstrap-datepicker
-    * Bootstrap 4: https://github.com/flatpickr/flatpickr
- * Datetimepicker
-    * Bootstrap 3: https://github.com/Eonasdan/bootstrap-datetimepicker
-    * Bootstrap 4: https://github.com/flatpickr/flatpickr
+ * Datepicker & Datetimepicker: https://github.com/flatpickr/flatpickr
  * Email
  * File
  * Hidden
