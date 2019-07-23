@@ -5,7 +5,7 @@
     <label for="{{ $name }}">{{ $label  }}</label>
     @endif
     <div class="input-group">
-        <span class="input-group-addon"><i class="fas fa-calendar"></i></span>
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
         <input id="{{ $name }}" type="text" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="form-control datepicker">
     </div>
 @if($includeFormGroup)
