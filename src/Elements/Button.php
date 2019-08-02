@@ -6,8 +6,4 @@ namespace AdamTheHutt\LeanForms\Elements;
 class Button extends BaseElement
 {
     protected $template = "button";
-
-    protected $vars = [
-        "class" => "btn btn-primary"
-    ];
 }

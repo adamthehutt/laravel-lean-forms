@@ -2,7 +2,7 @@
 
 #### Installation
 ```bash
-php artisan composer require adamthehutt/laravel-lean-forms
+composer require adamthehutt/laravel-lean-forms
 ```
 
 If you would like to change the default skin or customize templates:
@@ -56,6 +56,8 @@ display logic:
 
 {{ $form->preferredDiet()->class("foo-bar") }}
 ```
+
+**Note:** Be sure to compile your JavaScript assets!
 
 #### Form generator
 The package includes an artisan command for generating new form classes:
@@ -117,10 +119,10 @@ fields. There are two ways you can do this.
 #### Available field types
 The following field types are currenly supported:
  * Button
+ * Checboxes
  * Checkbox Boolean
  * Currency
- * Datepicker (https://github.com/eternicode/bootstrap-datepicker)
- * Datetimepicker (https://github.com/Eonasdan/bootstrap-datetimepicker)
+ * Datepicker & Datetimepicker: https://github.com/flatpickr/flatpickr
  * Email
  * File
  * Hidden
@@ -145,10 +147,10 @@ logic e.g.:
 
 #### Form skinning
 The package supports "skinning" forms according to different conventions or 
-standards. The default (and only currently provided) skin is Bootstrap 3. (Pull
+standards. The default skin is Bootstrap 3, while Bootstrap 4 is also supported. (Pull
 requests for templates supporting other skins are more than welcome!) You can
-configure a default skin for your forms by setting the value in the 
-lean-forms.php config file. You can also set it for an individual form by 
+configure a default skin for your forms by setting the LEAN_FORMS_SKIN value in the 
+.env file. You can also set it for an individual form by 
 changing the $skin property.
 
 #### Form field wrapping

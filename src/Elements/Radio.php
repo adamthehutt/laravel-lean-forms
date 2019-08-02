@@ -8,8 +8,6 @@ class Radio extends BaseElement
     protected $template = "radio";
 
     protected $vars = [
-        "class" => "form-control",
-        "label_class" => "control-label",
         "options" => []
     ];
 }

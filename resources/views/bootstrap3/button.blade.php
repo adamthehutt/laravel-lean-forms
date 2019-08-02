@@ -1,1 +1,1 @@
-<button type="button" class="{{ $class }}">{!! $__value !!}</button>
+<button type="button" class="btn btn-default">{!! $__value !!}</button>

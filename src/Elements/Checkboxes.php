@@ -5,9 +5,9 @@ namespace AdamTheHutt\LeanForms\Elements;
 
 use Illuminate\Support\HtmlString;
 
-class Select extends BaseElement
+class Checkboxes extends BaseElement
 {
-    protected $template = "select";
+    protected $template = "checkboxes";
 
     protected $vars = [
         "options" => []
