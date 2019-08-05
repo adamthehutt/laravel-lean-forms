@@ -2,7 +2,7 @@
 <div class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <label for="{{ $name }}" class="">{{ $label }}</label>
+    <label for="{{ $name }}" class="{{ $label_class }}">{{ $label }}</label>
     @endif
     <div class="input-group">
         <div class="input-group-prepend">
@@ -10,7 +10,7 @@
                 <i class="fa fa-dollar-sign"></i>
             </span>
         </div>
-        <input id="{{ $name }}" type="text" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="form-control currency">
+        <input id="{{ $name }}" type="text" name="{{ $name }}" value="{{ $__value }}" {!! $attributes !!} class="form-control currency {{ $class }}">
     </div>
 @if($includeFormGroup)
 </div>

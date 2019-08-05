@@ -2,7 +2,7 @@
 <fieldset class="form-group @error($name) has-error @enderror">
 @endif
     @if($includeLabel)
-    <legend for="{{ $id ?? $name }}" class="col-form-label">{{ $label }}</legend>
+    <legend for="{{ $id ?? $name }}" class="col-form-label {{ $label_class }}">{{ $label }}</legend>
     @endif
 
     @foreach($options as $key => $descriptor)
