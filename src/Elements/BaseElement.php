@@ -28,7 +28,10 @@ class BaseElement implements Htmlable
     protected $form;
 
     /** @var array  */
-    protected $vars = [];
+    protected $vars = [
+      "class" => "",
+      "label_class" => ""
+    ];
 
     /** @var string */
     protected $template;
