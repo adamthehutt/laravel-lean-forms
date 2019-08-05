@@ -9,10 +9,6 @@ class Select extends BaseElement
 {
     protected $template = "select";
 
-    protected $vars = [
-        "options" => []
-    ];
-
     /**
      * Override parent method so we can "collect" a super __value
      */

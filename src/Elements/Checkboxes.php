@@ -9,10 +9,6 @@ class Checkboxes extends BaseElement
 {
     protected $template = "checkboxes";
 
-    protected $vars = [
-        "options" => []
-    ];
-
     /**
      * Override parent method so we can "collect" a super __value
      */

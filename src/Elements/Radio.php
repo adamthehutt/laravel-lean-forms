@@ -6,8 +6,4 @@ namespace AdamTheHutt\LeanForms\Elements;
 class Radio extends BaseElement
 {
     protected $template = "radio";
-
-    protected $vars = [
-        "options" => []
-    ];
 }
