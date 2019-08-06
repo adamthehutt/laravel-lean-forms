@@ -5,7 +5,7 @@
     <label for="{{ $id ?? $name }}" class="col-form-label {{ $label_class }}">{{ $label }}</label>
     @endif
 
-    <select id="{{ $id ?? $name }}" name="{{ $name }}" class="form-control" {!! $attributes !!}>
+    <select id="{{ $id ?? $name }}" name="{{ $name }}" class="form-control {{ $class}}" {!! $attributes !!}>
     @foreach($options as $key => $value)
         @if (is_iterable($value))
             @include("lean-forms::bootstrap4.select-optgroup")
