@@ -63,6 +63,18 @@ abstract class AbstractForm
 
         throw new \RuntimeException("Failed to handle call for field \"$method\"");
     }
+    
+    /**
+     * Syntactic sugar allowing us to reference a field's calculated value by a
+     * virtual property name, e.g., $form->email is the same as $form->email()->getValue()
+     *
+     * @param string $field
+     * @return mixed
+     */
+    public function __get(string $field)
+    {
+        return $this->$field()->getValue();
+    }
 
     public function open($method = null, $action = null): Opening
     {
