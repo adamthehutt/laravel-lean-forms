@@ -8,7 +8,7 @@
     @foreach($options as $key => $descriptor)
     <div class="form-check">
         <label>
-            <input type="radio" name="{{ $name }}" id="{{ $id ?? $name }}-{{ $key }}" value="{{ $key }}" class="form-check-input" @if($key == $__value) checked @endif>
+            <input type="radio" name="{{ $name }}" id="{{ $id ?? $name }}-{{ $key }}" value="{{ $key }}" class="form-check-input" @if($key == $__value) checked @endif {{ $attributes }}>
             {{ $descriptor }}
         </label>
     </div>
