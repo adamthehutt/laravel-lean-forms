@@ -3,9 +3,10 @@
     "description": "Code-based form configuration for Laravel. Lean, clean, and mean blade templates. Complete separation of business logic and UI/display logic.",
     "type": "library",
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
+        "ext-json": "*",
         "illuminate/support": "^5.8 | ^6.0 | ^7.0",
-        "illuminate/database": "^5.8 | ^6.0 | ^7.0"
+        "illuminate/database": "^5.8 | ^6.0 | ^7.0",
     },
     "require-dev": {
         "phpunit/phpunit": "^8.2",

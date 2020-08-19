@@ -65,15 +65,28 @@ abstract class AbstractForm
     }
     
     /**
-     * Syntactic sugar allowing us to reference a field's calculated value by a
-     * virtual property name, e.g., $form->email is the same as $form->email()->getValue()
-     *
      * @param string $field
      * @return mixed
      */
     public function __get(string $field)
     {
-        return $this->$field()->getValue();
+        if (method_exists($this, $field)) {
+            return $this->$field()->getValue();
+        }
+
+        $snake = Str::snake($field);
+
+        return old($field)
+            ?? old($snake)
+            ?? optional($this->model)->$field
+            ?? optional($this->model)->$snake;
+    }
+
+    public function json(array $fields)
+    {
+        return json_encode(
+            array_combine($fields, array_map(fn ($field) => $this->__get($field), $fields))
+        );
     }
 
     public function open($method = null, $action = null): Opening
