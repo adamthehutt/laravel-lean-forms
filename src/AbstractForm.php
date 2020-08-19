@@ -78,8 +78,8 @@ abstract class AbstractForm
 
         return old($field)
             ?? old($snake)
-            ?? optional($this->model)->$field
-            ?? optional($this->model)->$snake;
+            ?? optional($this->model)->getAttribute($field)
+            ?? optional($this->model)->getAttribute($snake);
     }
 
     public function json(array $fields)
